@@ -5,10 +5,11 @@ const https = require('https');
 const jsdom = require('jsdom');
 
 const config = require('./config.json');
+const token = require('./token.json');
 const pick4meList = require('./pick4meList.json');
 const championBuildList = require('./championBuildList.json')
 
-client.login(config.token);
+client.login(token.token);
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
