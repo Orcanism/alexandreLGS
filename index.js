@@ -106,6 +106,8 @@ client.on('messageCreate', msg => {
                         }
                     })
                 })
+
+                msg.channel.send('Je suis désormais à jour !');
             }
 
             else if (cmd == 'pick4me') {
