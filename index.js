@@ -5,11 +5,11 @@ const https = require('https');
 const jsdom = require('jsdom');
 
 const config = require('./config.json');
-const token = require('./token.json');
+const private = require('./private.json');
 const pick4meList = require('./pick4meList.json');
 const championBuildList = require('./championBuildList.json');
 
-client.login(token.token);
+client.login(private.token);
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -67,27 +67,26 @@ client.on('messageCreate', msg => {
 			}
 
             // Commande pick4me, le bot donne un champion, une rune principale, et un item mythic aléatoire
-			else if (cmd === 'pick4me') {
+			else if (cmd === 'update') {
                 let link = {host: 'ddragon.leagueoflegends.com', path: '/api/versions.json'};
-					https.get(link, res => {
-						let html = '';
-						res.on('data', chunk => {
-							html += chunk;
-						});
-						res.on('end', () => {
-							if (res.statusCode === 200) {
-								let htmlDOM = new jsdom.JSDOM(html);
-								let document = htmlDOM.window.document;
-                                msg.channel.send(document);
-
-							}
-							else if (res.statusCode !== 200) {
-								msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
-							}
-						})
-					})
-
-                msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
+                https.get(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+                            config.currentVersion = JSON.parse(document.firstChild.lastChild.firstChild.textContent)[0];
+                            let configPush = JSON.stringify(config, null, 4);
+                            fs.writeFile('./config.json', configPush, () => console.error);
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
             }
 
 			// Commande build, envoie la page op.gg du champion demandé
