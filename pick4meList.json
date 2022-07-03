@@ -1,5 +1,5 @@
 {
-	"champion": [
+	"champions": [
 		"Aatrox",
 		"Ahri",
 		"Akali",
@@ -161,7 +161,7 @@
 		"Zoe",
 		"Zyra"
 	],
-	"rune": [
+	"runes": [
 		"Press The Attack",
 		"Lethal Tempo",
 		"Fleet Footwork",
@@ -180,7 +180,7 @@
 		"Unsealed Spellbook",
 		"First Strike"
 	],
-	"item": [
+	"items": [
 		"Shurelya's Battlesong",
 		"Locket of the Iron Solari",
 		"Imperial Mandate",

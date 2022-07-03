@@ -55,18 +55,18 @@ client.on('messageCreate', msg => {
 				console.log(client.ws.ping + ' ms');
 			}
 
-			// Commande oldpick4me, DEPRECATED
-			else if (cmd === 'oldpick4me') {
-                let rdmChampion = getRandomInt(pick4meList.champion.length);
-                let rdmRune = getRandomInt(pick4meList.rune.length);
-                let rdmItem = getRandomInt(pick4meList.item.length);
+			// Commande pick4me, picking random thing
+			else if (cmd === 'pick4me') {
+                let rdmChampion = getRandomInt(pick4meList.champions.length);
+                let rdmRune = getRandomInt(pick4meList.runes.length);
+                let rdmItem = getRandomInt(pick4meList.items.length);
                 let championString = pick4meList.champion[rdmChampion];
                 let runeString = pick4meList.rune[rdmRune];
                 let itemString = pick4meList.item[rdmItem];
                 msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
 			}
 
-            // Commande pick4me, le bot donne un champion, une rune principale, et un item mythic aléatoire
+            // Commande update, update la version du jeu (pour le moment)
 			else if (cmd === 'update') {
                 let link = {host: 'ddragon.leagueoflegends.com', path: '/api/versions.json'};
                 https.get(link, res => {
@@ -87,6 +87,29 @@ client.on('messageCreate', msg => {
                         }
                     })
                 })
+                link = {host: 'ddragon.leagueoflegends.com', path: '/cdn/' + config.currentVersion + '/data/en_US/champion.json'};
+                https.get(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+                            pick4meList.champions = Object.keys(JSON.parse(document.firstChild.lastChild.firstChild.textContent).data);
+                            let pick4meListPush = JSON.stringify(config, null, 4);
+                            fs.writeFile('./pick4meList.json', pick4meListPush, () => console.error);
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
+            }
+
+            else if (cmd == 'pick4me') {
+
             }
 
 			// Commande build, envoie la page op.gg du champion demandé
