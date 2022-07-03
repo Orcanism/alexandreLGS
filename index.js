@@ -7,7 +7,7 @@ const jsdom = require('jsdom');
 const config = require('./config.json');
 const token = require('./token.json');
 const pick4meList = require('./pick4meList.json');
-const championBuildList = require('./championBuildList.json')
+const championBuildList = require('./championBuildList.json');
 
 client.login(token.token);
 
@@ -55,8 +55,8 @@ client.on('messageCreate', msg => {
 				console.log(client.ws.ping + ' ms');
 			}
 
-			// Commande pick4me, le bot donne un champion, une rune principale, et un item mythic aléatoire
-			else if (cmd === 'pick4me') {
+			// Commande oldpick4me, DEPRECATED
+			else if (cmd === 'oldpick4me') {
                 let rdmChampion = getRandomInt(pick4meList.champion.length);
                 let rdmRune = getRandomInt(pick4meList.rune.length);
                 let rdmItem = getRandomInt(pick4meList.item.length);
@@ -65,6 +65,30 @@ client.on('messageCreate', msg => {
                 let itemString = pick4meList.item[rdmItem];
                 msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
 			}
+
+            // Commande pick4me, le bot donne un champion, une rune principale, et un item mythic aléatoire
+			else if (cmd === 'pick4me') {
+                let link = {host: 'ddragon.leagueoflegends.com', path: '/api/versions.json'};
+					https.get(link, res => {
+						let html = '';
+						res.on('data', chunk => {
+							html += chunk;
+						});
+						res.on('end', () => {
+							if (res.statusCode === 200) {
+								let htmlDOM = new jsdom.JSDOM(html);
+								let document = htmlDOM.window.document;
+                                msg.channel.send(document);
+
+							}
+							else if (res.statusCode !== 200) {
+								msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+							}
+						})
+					})
+
+                msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
+            }
 
 			// Commande build, envoie la page op.gg du champion demandé
 			else if (cmd === 'build') {
