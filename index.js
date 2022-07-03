@@ -27,6 +27,10 @@ function normalizeChampionBuildList(str) {
 // Liste lolRole, liste les roles jouable sur League of Legends
 const lolRoleList = ['top','jungle','mid','adc','support'];
 
+// Liste serverList, liste les serveurs de league of legends
+const serverList = ['BR1','EUN1','EUW1','JP1','KR','LA1','LA2','NA1','OC1','RU','TR1'];
+
+
 client.on('ready', () => {
 	console.log('Alexandre is ready !');
 });
@@ -36,11 +40,10 @@ client.on('messageCreate', msg => {
 
 	// Vérifie que le message débute avec le préfixe
 	if (msg.channel.type !== "dm" && !msg.author.bot) {
-		checkPrefix = msg.content.startsWith(config.prefix);
 		let args = null;
 
 		// Separe le préfixe, la commande et les arguments dans des variables différentes
-		if (checkPrefix) {
+		if (msg.content.startsWith(config.prefix)) {
 			args = msg.content.slice(config.prefix.length).split(' ');
 
 			cmd = args.shift().toLowerCase();
@@ -108,6 +111,17 @@ client.on('messageCreate', msg => {
                 })
 
                 msg.channel.send('Je suis désormais à jour !');
+            }
+
+            else if (cmd === 'summoner') {
+                let serverName = 'EUW1';
+                for (let i = 0; i < serverList.length; i++) { 
+                    if (args[0].toUpperCase() = serverList[i]) {
+                        serverName = serverList[i];
+     
+                    }
+                }
+                msg.channel.send(serverName);
             }
 
 			// Commande build, envoie la page op.gg du champion demandé
