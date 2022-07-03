@@ -98,7 +98,7 @@ client.on('messageCreate', msg => {
                             let htmlDOM = new jsdom.JSDOM(html);
                             let document = htmlDOM.window.document;
                             pick4meList.champions = Object.keys(JSON.parse(document.firstChild.lastChild.firstChild.textContent).data);
-                            let pick4meListPush = JSON.stringify(config, null, 4);
+                            let pick4meListPush = JSON.stringify(pick4meList, null, 4);
                             fs.writeFile('./pick4meList.json', pick4meListPush, () => console.error);
                         }
                         else if (res.statusCode !== 200) {
