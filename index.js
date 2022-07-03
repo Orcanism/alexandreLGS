@@ -110,10 +110,6 @@ client.on('messageCreate', msg => {
                 msg.channel.send('Je suis désormais à jour !');
             }
 
-            else if (cmd == 'pick4me') {
-
-            }
-
 			// Commande build, envoie la page op.gg du champion demandé
 			else if (cmd === 'build') {
                 if (args.length > 0) {
