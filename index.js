@@ -126,10 +126,36 @@ client.on('messageCreate', msg => {
             else if (cmd === 'summoner') {
                 if (args.length > 0) {
                     let serverName = 'EUW1';
+                    let route = 'europe';
                     let argsContainsServerName = false;
                     let leagueUsername = '';
                     for (let i = 0; i < serverList.length; i++) { 
                         if (args[0].toUpperCase() == serverList[i]) {
+                            switch (args[0].toUpperCase()) {
+                                case 'BR1':
+                                    route = 'americas';
+                                    break;
+                                case 'LA1':
+                                    route = 'americas';
+                                    break;
+                                case 'LA2':
+                                    route = 'americas';
+                                    break;
+                                case 'NA1':
+                                    route = 'americas';
+                                    break;
+                                case 'JP1':
+                                    route = 'asia';
+                                    break;
+                                case 'KR':
+                                    route = 'asia';
+                                    break;
+                                case 'OC1':
+                                    route = 'sea';
+                                    break;
+                                default:
+                                    break;
+                            }
                             serverName = serverList[i];
                             argsContainsServerName = true;
                         }    
@@ -148,6 +174,7 @@ client.on('messageCreate', msg => {
                     let link = {host: serverName + '.api.riotgames.com', path: '/lol/summoner/v4/summoners/by-name/' + leagueUsername + '?api_key=' + private.apiKey};
                     let puuid = 'yousk';
                     let level = 'yousk';
+                    let lastTwentyGames = [];
                     httpsGet(link, res => {
                         let html = '';
                         res.on('data', chunk => {
@@ -166,7 +193,27 @@ client.on('messageCreate', msg => {
                         })
                     // BUG, execute le .then() meme si la requete https ne passe pas
                     }).then(() => {
-                        msg.channel.send('puuid : ' + puuid + ' Level : ' + level);
+                        link = {host: route + '.api.riotgames.com', path: '/lol/match/v5/matches/by-puuid/' + puuid + '/ids?start=0&count=20&api_key=' + private.apiKey};
+                        httpsGet(link, res => {
+                            let html = '';
+                            res.on('data', chunk => {
+                                html += chunk;
+                            });
+                            res.on('end', () => {
+                                if (res.statusCode === 200) {
+                                    let htmlDOM = new jsdom.JSDOM(html);
+                                    let document = htmlDOM.window.document;
+                                    lastTwentyGames = JSON.parse(document.firstChild.lastChild.firstChild.textContent);
+                                }
+                                else if (res.statusCode !== 200) {
+                                    msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                                }
+                            })
+                        }).then(() => {
+                            console.log(lastTwentyGames);
+                            // La suite ce sera ici :D
+                            msg.channel.send('c\'est pas fini :)');
+                        })
                     })
                 }
                 else {
