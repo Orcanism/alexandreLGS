@@ -8,8 +8,18 @@ const config = require('./config.json');
 const private = require('./private.json');
 const pick4meList = require('./pick4meList.json');
 const championBuildList = require('./championBuildList.json');
+const { resolve } = require('path');
 
 client.login(private.token);
+
+async function httpsGet(url, callback) {
+    return new Promise((resolve, reject) => {
+        https.get(url, response => {
+            callback(response);
+            resolve();
+        });
+    });
+}
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -72,7 +82,7 @@ client.on('messageCreate', msg => {
             // Commande update, update la version du jeu (pour le moment)
 			else if (cmd === 'update') {
                 let link = {host: 'ddragon.leagueoflegends.com', path: '/api/versions.json'};
-                https.get(link, res => {
+                httpsGet(link, res => {
                     let html = '';
                     res.on('data', chunk => {
                         html += chunk;
@@ -91,7 +101,7 @@ client.on('messageCreate', msg => {
                     })
                 })
                 link = {host: 'ddragon.leagueoflegends.com', path: '/cdn/' + config.currentVersion + '/data/en_US/champion.json'};
-                https.get(link, res => {
+                httpsGet(link, res => {
                     let html = '';
                     res.on('data', chunk => {
                         html += chunk;
@@ -136,7 +146,8 @@ client.on('messageCreate', msg => {
                     } 
                     leagueUsername = leagueUsername.slice(0, leagueUsername.length - 3);
                     let link = {host: serverName + '.api.riotgames.com', path: '/lol/summoner/v4/summoners/by-name/' + leagueUsername + '?api_key=' + private.apiKey};
-                    https.get(link, res => {
+                    let puuid = 'yousk';
+                    httpsGet(link, res => {
                         let html = '';
                         res.on('data', chunk => {
                             html += chunk;
@@ -145,11 +156,13 @@ client.on('messageCreate', msg => {
                             if (res.statusCode === 200) {
                                 let htmlDOM = new jsdom.JSDOM(html);
                                 let document = htmlDOM.window.document;
-                                console.log('gg ca fonctionne');
-
-
+                                puuid = JSON.parse(document.firstChild.lastChild.firstChild.textContent).puuid;
+                                let level = JSON.parse(document.firstChild.lastChild.firstChild.textContent).summonerLevel;
+                                msg.channel.send('puuid : ' + puuid + ' Level : ' + level);
                             }
                         })
+                    }).then(() => {
+                        console.log(puuid);
                     })
                 }
                 else {
