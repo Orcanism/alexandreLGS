@@ -114,14 +114,33 @@ client.on('messageCreate', msg => {
             }
 
             else if (cmd === 'summoner') {
-                let serverName = 'EUW1';
-                for (let i = 0; i < serverList.length; i++) { 
-                    if (args[0].toUpperCase() == serverList[i]) {
-                        serverName = serverList[i];
-
+                if (args.length > 0) {
+                    let serverName = 'EUW1';
+                    let argsContainsServerName = false;
+                    let leagueUsername = '';
+                    for (let i = 0; i < serverList.length; i++) { 
+                        if (args[0].toUpperCase() == serverList[i]) {
+                            serverName = serverList[i];
+                            argsContainsServerName = true;
+                        }    
                     }
+                    if (argsContainsServerName) {
+                        for (let i = 1; i < args.length; i++) { 
+                            leagueUsername += args[i] + '%20';
+                        }
+                    }  
+                    else {
+                        for (let i = 0; i < args.length; i++) { 
+                            leagueUsername += args[i] + '%20';
+                        }
+                    } 
+                    leagueUsername = leagueUsername.slice(0, leagueUsername.length - 3);
+                    
+
                 }
-                msg.channel.send(serverName);
+                else {
+                    msg.channel.send('la commande comporte trop peu d\'arguments')
+                }
             }
 
 			// Commande build, envoie la page op.gg du champion demandé
