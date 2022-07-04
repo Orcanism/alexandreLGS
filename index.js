@@ -147,6 +147,7 @@ client.on('messageCreate', msg => {
                     leagueUsername = leagueUsername.slice(0, leagueUsername.length - 3);
                     let link = {host: serverName + '.api.riotgames.com', path: '/lol/summoner/v4/summoners/by-name/' + leagueUsername + '?api_key=' + private.apiKey};
                     let puuid = 'yousk';
+                    let level = 'yousk';
                     httpsGet(link, res => {
                         let html = '';
                         res.on('data', chunk => {
@@ -157,12 +158,15 @@ client.on('messageCreate', msg => {
                                 let htmlDOM = new jsdom.JSDOM(html);
                                 let document = htmlDOM.window.document;
                                 puuid = JSON.parse(document.firstChild.lastChild.firstChild.textContent).puuid;
-                                let level = JSON.parse(document.firstChild.lastChild.firstChild.textContent).summonerLevel;
-                                msg.channel.send('puuid : ' + puuid + ' Level : ' + level);
+                                level = JSON.parse(document.firstChild.lastChild.firstChild.textContent).summonerLevel;
+                            }
+                            else if (res.statusCode !== 200) {
+                                msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
                             }
                         })
+                    // BUG, execute le .then() meme si la requete https ne passe pas
                     }).then(() => {
-                        console.log(puuid);
+                        msg.channel.send('puuid : ' + puuid + ' Level : ' + level);
                     })
                 }
                 else {
