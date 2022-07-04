@@ -63,9 +63,9 @@ client.on('messageCreate', msg => {
                 let rdmChampion = getRandomInt(pick4meList.champions.length);
                 let rdmRune = getRandomInt(pick4meList.runes.length);
                 let rdmItem = getRandomInt(pick4meList.items.length);
-                let championString = pick4meList.champion[rdmChampion];
-                let runeString = pick4meList.rune[rdmRune];
-                let itemString = pick4meList.item[rdmItem];
+                let championString = pick4meList.champions[rdmChampion];
+                let runeString = pick4meList.runes[rdmRune];
+                let itemString = pick4meList.items[rdmItem];
                 msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
 			}
 
@@ -116,9 +116,9 @@ client.on('messageCreate', msg => {
             else if (cmd === 'summoner') {
                 let serverName = 'EUW1';
                 for (let i = 0; i < serverList.length; i++) { 
-                    if (args[0].toUpperCase() = serverList[i]) {
+                    if (args[0].toUpperCase() == serverList[i]) {
                         serverName = serverList[i];
-     
+
                     }
                 }
                 msg.channel.send(serverName);
