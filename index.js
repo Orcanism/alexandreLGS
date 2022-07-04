@@ -135,11 +135,25 @@ client.on('messageCreate', msg => {
                         }
                     } 
                     leagueUsername = leagueUsername.slice(0, leagueUsername.length - 3);
-                    
+                    let link = {host: serverName + '.api.riotgames.com', path: '/lol/summoner/v4/summoners/by-name/' + leagueUsername + '?api_key=' + private.apiKey};
+                    https.get(link, res => {
+                        let html = '';
+                        res.on('data', chunk => {
+                            html += chunk;
+                        });
+                        res.on('end', () => {
+                            if (res.statusCode === 200) {
+                                let htmlDOM = new jsdom.JSDOM(html);
+                                let document = htmlDOM.window.document;
+                                console.log('gg ca fonctionne');
 
+
+                            }
+                        })
+                    })
                 }
                 else {
-                    msg.channel.send('la commande comporte trop peu d\'arguments')
+                    msg.channel.send('la commande comporte trop peu d\'arguments');
                 }
             }
 
