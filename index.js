@@ -68,6 +68,10 @@ client.on('messageCreate', msg => {
 				console.log(client.ws.ping + ' ms');
 			}
 
+            else if (cmd === 'testtest') {
+                msg.channel.send('salut')
+            }
+
 			// Commande pick4me, picking random thing
 			else if (cmd === 'pick4me') {
                 let rdmChampion = getRandomInt(pick4meList.champions.length);
@@ -244,8 +248,12 @@ client.on('messageCreate', msg => {
 				}
 				else {
 					msg.channel.send(wrongChannel);
-				}
+				}         
 			}
+            
+            else if (cmd === 'nationalite') {
+                msg.channel.send('je suis Macédonien, mais pschhht, ne dit rien à Mousse');
+            }
 		}
 	}
 });
