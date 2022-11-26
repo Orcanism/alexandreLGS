@@ -122,6 +122,27 @@ client.on('messageCreate', msg => {
                     })
                 })
 			}
+			else if (cmd === 'meteo') {
+				let link = {host: 'weather.com', path: '/fr-FR/temps/aujour/l/13d451840dce871fb7bd25fac368ff94bd3b30b8a2c74fe3285ec75851f54ddc'};
+				httpsGet(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+							let temp = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[0].textContent;
+							let sky = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[1].textContent.toLowerCase();
+							msg.channel.send('À Skopje il fait **' + temp + '** avec un ciel **' + sky + '**');
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
+			}
 		}
 	}
 });
