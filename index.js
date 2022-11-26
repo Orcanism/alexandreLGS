@@ -82,7 +82,7 @@ client.on('messageCreate', msg => {
 							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko, Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
 						case '3':
-							msg.channel.send('Tout conflit doit être réglé par un #1v1-lee-sin-chad-gaming');
+							msg.channel.send('Tout conflit doit être réglé par un <#992797701299245206>');
 							break;
 						case '34':
 							msg.channel.send('https://rule34.xxx/index.php?page=post&s=list&tags=league_of_legends');
