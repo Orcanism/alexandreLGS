@@ -109,7 +109,7 @@ client.on('messageCreate', msg => {
 				}
 			}
 
-			//Commande UwU, envoie une image de acht trop meugnon <3
+			// Commande UwU, envoie une image de acht trop meugnon <3
 			else if (cmd === 'uwu') {
 				let link = {host: 'api.thecatapi.com', path: '/v1/images/search'};
 				httpsGet(link, res => {
