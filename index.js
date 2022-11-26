@@ -80,7 +80,8 @@ client.on('messageCreate', msg => {
 						case '2':
 							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko, Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
-
+						case '3':
+							msg.channel.send('Tout conflit doit être réglé par un #1v1-lee-sin-chad-gaming');
 						case '34':
 							msg.channel.send('https://rule34.xxx/index.php?page=post&s=list&tags=league_of_legends');
 							break;
@@ -97,7 +98,6 @@ client.on('messageCreate', msg => {
 			//Commande UwU, envoie une image de acht trop meugnon <3
 			else if (cmd === 'uwu') {
 				let link = {host: 'api.thecatapi.com', path: '/v1/images/search'};
-
 				httpsGet(link, res => {
                     let html = '';
                     res.on('data', chunk => {
