@@ -62,17 +62,18 @@ client.on('messageCreate', msg => {
 			if (cmd === 'test') {
 			}
 
+			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
+			else if (cmd === 'testtest') {
+				msg.channel.send('salut')
+			}
+
 			// Commande ping, envoi le ping du bot en milliseconde
 			else if (cmd === 'ping') {
 				msg.channel.send('J\'ai ' + client.ws.ping + ' ms de latence');
 				console.log(client.ws.ping + ' ms');
 			}
 
-            // breaks the code if removed
-            else if (cmd === 'testtest') {
-                msg.channel.send('salut')
-            }
-            
+			// Commande nationalite, petit message pour trigger mousse
             else if (cmd === 'nationalite') {
                 msg.channel.send('je suis Macédonien, mais pschhht, ne dit rien à Mousse');
             }
