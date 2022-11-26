@@ -75,13 +75,17 @@ client.on('messageCreate', msg => {
 				if (args.length == 1) {
 					switch (args[0]) {
 						case '1':
-							msg.channel.send('Ne pourchasser jamais un Singed !')
+							msg.channel.send('Ne pourchasser jamais un Singed !');
 							break;
 						case '2':
 							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko, Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
+
+						case '34':
+							msg.channel.send('https://rule34.xxx/index.php?page=post&s=list&tags=league_of_legends');
+							break;
 						default:
-							msg.channel.send('Cette règle n\'éxiste pas...')
+							msg.channel.send('Cette règle n\'éxiste pas...');
 							break;
 					}
 				}
