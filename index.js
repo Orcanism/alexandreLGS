@@ -122,6 +122,8 @@ client.on('messageCreate', msg => {
                     })
                 })
 			}
+
+			// Commande meteo, envoie la meteo de Skopje
 			else if (cmd === 'meteo') {
 				let link = {host: 'weather.com', path: '/fr-FR/temps/aujour/l/13d451840dce871fb7bd25fac368ff94bd3b30b8a2c74fe3285ec75851f54ddc'};
 				httpsGet(link, res => {
