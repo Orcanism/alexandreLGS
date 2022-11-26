@@ -7,7 +7,6 @@ const jsdom = require('jsdom');
 const config = require('./config.json');
 const private = require('./private.json');
 const { resolve } = require('path');
-
 client.login(private.token);
 
 async function httpsGet(url, callback) {
@@ -18,6 +17,8 @@ async function httpsGet(url, callback) {
         });
     });
 }
+
+const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -71,7 +72,19 @@ client.on('messageCreate', msg => {
 
 			// Commande rule, pour recevoir les règles du serveur
 			else if (cmd === 'rule') {
-				msg.channel.send('testtesttest');
+				if (args.length == 1) {
+					switch (args[0]) {
+						case 1:
+							msg.channel.send('Ne pourchasser jamais un Singed !')
+							break;
+						default:
+							msg.channel.send('Cette règle n\'éxiste pas...')
+							break;
+					}
+				}
+				else {
+					msg.channel.send(incorrectArgument);
+				}
 			}
 		}
 	}
