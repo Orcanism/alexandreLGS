@@ -6,8 +6,6 @@ const jsdom = require('jsdom');
 
 const config = require('./config.json');
 const private = require('./private.json');
-const pick4meList = require('./pick4meList.json');
-const championBuildList = require('./championBuildList.json');
 const { resolve } = require('path');
 
 client.login(private.token);
@@ -33,13 +31,6 @@ function normalizeChampionBuildList(str) {
 		.replace(/\'/g, "")
 		return champion;
 }
-
-// Liste lolRole, liste les roles jouable sur League of Legends
-const lolRoleList = ['top','jungle','mid','adc','support'];
-
-// Liste serverList, liste les serveurs de league of legends
-const serverList = ['BR1','EUN1','EUW1','JP1','KR','LA1','LA2','NA1','OC1','RU','TR1'];
-
 
 client.on('ready', () => {
 	console.log('Alexandre is ready !');
