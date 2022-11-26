@@ -52,7 +52,7 @@ client.on('messageCreate', msg => {
 			cmd = args.shift().toLowerCase();
 
 			if (cmd === 'help') {
-				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - meteo');
+				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - meteo\n - credit');
 			}
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
@@ -151,6 +151,10 @@ client.on('messageCreate', msg => {
                         }
                     })
                 })
+			}
+
+			else if (cmd === 'credit') {
+				msg.channel.send('Mes parents sont: <@319851824872030209> et <@626436514502541312>');
 			}
 		}
 	}
