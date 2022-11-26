@@ -74,8 +74,11 @@ client.on('messageCreate', msg => {
 			else if (cmd === 'rule') {
 				if (args.length == 1) {
 					switch (args[0]) {
-						case 1:
+						case '1':
 							msg.channel.send('Ne pourchasser jamais un Singed !')
+							break;
+						case '2':
+							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko, Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
 						default:
 							msg.channel.send('Cette règle n\'éxiste pas...')
