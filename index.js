@@ -68,6 +68,11 @@ client.on('messageCreate', msg => {
             else if (cmd === 'nationalite') {
                 msg.channel.send('je suis Macédonien, mais pschhht, ne dit rien à Mousse');
             }
+
+			// Commande rule, pour recevoir les règles du serveur
+			else if (cmd === 'rule') {
+				msg.channel.send('testtesttest');
+			}
 		}
 	}
 });
