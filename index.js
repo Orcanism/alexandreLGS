@@ -57,13 +57,18 @@ client.on('messageCreate', msg => {
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
 			else if (cmd === 'testtest') {
-				msg.channel.send('salut')
+				msg.channel.send('salut');
 			}
 
 			// Commande ping, envoi le ping du bot en milliseconde
 			else if (cmd === 'ping') {
 				msg.channel.send('J\'ai ' + client.ws.ping + ' ms de latence');
 				console.log(client.ws.ping + ' ms');
+			}
+
+			// Commande papagei, repete le message envoyer par l'utilisateur
+			else if (comd === 'papagei') {
+				msg.channel.send(args.join(' '));
 			}
 
 			// Commande nationalite, petit message pour trigger mousse
