@@ -89,6 +89,28 @@ client.on('messageCreate', msg => {
 					msg.channel.send(incorrectArgument);
 				}
 			}
+
+			//Commande UwU, envoie une image de acht trop meugnon <3
+			else if (cmd === 'uwu') {
+				let link = {host: 'api.thecatapi.com', path: '/v1/images/search'};
+
+				httpsGet(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+							msg.channel.send(JSON.parse(document.childNodes[0].childNodes[1].childNodes[0].textContent)[0].url);
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
+			}
 		}
 	}
 });
