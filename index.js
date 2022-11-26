@@ -51,8 +51,12 @@ client.on('messageCreate', msg => {
 
 			cmd = args.shift().toLowerCase();
 
+			if (cmd === 'help') {
+				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - meteo');
+			}
+
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
-			if (cmd === 'test') {
+			else if (cmd === 'test') {
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
@@ -80,6 +84,9 @@ client.on('messageCreate', msg => {
 			else if (cmd === 'rule') {
 				if (args.length == 1) {
 					switch (args[0]) {
+						case 'help':
+ 							msg.channel.send('Les règles existante sont : 1, 2, 3, 34');
+							break;
 						case '1':
 							msg.channel.send('Ne pourchasser jamais un Singed !');
 							break;
