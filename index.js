@@ -67,7 +67,7 @@ client.on('messageCreate', msg => {
 			}
 
 			// Commande papagei, repete le message envoyer par l'utilisateur
-			else if (comd === 'papagei') {
+			else if (cmd === 'papagei') {
 				msg.channel.send(args.join(' '));
 			}
 
