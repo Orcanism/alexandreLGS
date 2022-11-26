@@ -9,6 +9,9 @@ const private = require('./private.json');
 const { resolve } = require('path');
 client.login(private.token);
 
+const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
+
+// Fonction httpsGet, permet de faire une requete https async
 async function httpsGet(url, callback) {
     return new Promise((resolve, reject) => {
         https.get(url, response => {
@@ -17,8 +20,6 @@ async function httpsGet(url, callback) {
         });
     });
 }
-
-const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -82,6 +83,7 @@ client.on('messageCreate', msg => {
 							break;
 						case '3':
 							msg.channel.send('Tout conflit doit être réglé par un #1v1-lee-sin-chad-gaming');
+							break;
 						case '34':
 							msg.channel.send('https://rule34.xxx/index.php?page=post&s=list&tags=league_of_legends');
 							break;
