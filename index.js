@@ -94,7 +94,7 @@ client.on('messageCreate', msg => {
 							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko (Mid), Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
 						case '3':
-							msg.channel.send('Tout conflit doit être réglé par un <#992797701299245206>');
+							msg.channel.send('Tout conflit doit être réglé par un <#1014611950568734851>');
 							break;
 						case '4':
 							msg.channel.send('Ne défier jamais <@319851824872030209> en 1v1 Vel\'Koz ! C\'est à vos risques et périls');
