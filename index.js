@@ -91,10 +91,13 @@ client.on('messageCreate', msg => {
 							msg.channel.send('Ne pourchasser jamais un Singed !');
 							break;
 						case '2':
-							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko, Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
+							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko (Mid), Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
 						case '3':
 							msg.channel.send('Tout conflit doit être réglé par un <#992797701299245206>');
+							break;
+						case '4':
+							msg.channel.send('Ne défier jamais <@319851824872030209> en 1v1 Vel\'Koz ! C\'est à vos risques et périls');
 							break;
 						case '34':
 							msg.channel.send('https://rule34.xxx/index.php?page=post&s=list&tags=league_of_legends');
@@ -109,7 +112,7 @@ client.on('messageCreate', msg => {
 				}
 			}
 
-			// Commande UwU, envoie une image de acht trop meugnon <3
+			// Commande UwU, envoie une image de chat trop meugnon <3
 			else if (cmd === 'uwu') {
 				let link = {host: 'api.thecatapi.com', path: '/v1/images/search'};
 				httpsGet(link, res => {
@@ -153,6 +156,7 @@ client.on('messageCreate', msg => {
                 })
 			}
 
+			// Commande credit, envoie les credits du bot
 			else if (cmd === 'credit') {
 				msg.channel.send('Mes parents sont: <@319851824872030209> et <@626436514502541312>');
 			}
