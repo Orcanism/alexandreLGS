@@ -26,20 +26,22 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 
-// Fonction normalizeChampionBuildList, permet de normaliser le nom des champions pour la commande build
-function normalizeChampionBuildList(str) {
-	let champion = str.toLowerCase()
-		.replace(/\./g, "")
-		.replace(/\'/g, "")
-		return champion;
-}
-
+// Actions s'éxécutant au démarage du bot
 client.on('ready', () => {
 	console.log('Alexandre is ready !');
 });
 
+// Actions s'éxécutant lorsqu'un membre rejoint le serveur
+client.on('guildMemberAdd', member => {
+	member.roles.add(992849670248341714);
+});
+
+// Actions s'éxécutant lorsqu'un message est envoyé
 client.on('messageCreate', msg => {
 	if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
+
+	// Compteur de messages envoyés sur le serveur
+
 
 	// Vérifie que le message débute avec le préfixe
 	if (msg.channel.type !== "dm" && !msg.author.bot) {
