@@ -6,7 +6,7 @@ const jsdom = require('jsdom');
 
 const config = require('./config.json');
 const private = require('./private.json');
-const pick4meList = require('./pick4meList.json');
+const memberStats = require('./pick4meList.json');
 const championBuildList = require('./championBuildList.json');
 const { resolve } = require('path');
 

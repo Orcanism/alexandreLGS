@@ -6,6 +6,7 @@ const jsdom = require('jsdom');
 
 const config = require('./config.json');
 const private = require('./private.json');
+const memberStats = require('./memberStats.json');
 const { resolve } = require('path');
 client.login(private.token);
 
@@ -41,7 +42,8 @@ client.on('messageCreate', msg => {
 	if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
 	// Compteur de messages envoyés sur le serveur
-
+	let idOfAuthor = msg.author.id
+	let usernameOfAuthor = msg.author.username
 
 	// Vérifie que le message débute avec le préfixe
 	if (msg.channel.type !== "dm" && !msg.author.bot) {
