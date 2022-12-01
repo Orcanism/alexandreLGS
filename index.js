@@ -35,6 +35,11 @@ client.on('ready', () => {
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
 client.on('guildMemberAdd', member => {
 	member.roles.add(992849670248341714);
+	if (!memberStats.hasOwnProperty(member.id)) {
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt}
+		let memberStatsPush = JSON.stringify(memberStats, null, 4);
+		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+	}
 });
 
 // Actions s'éxécutant lorsqu'un message est envoyé
