@@ -49,7 +49,7 @@ client.on('messageCreate', msg => {
 	// Compteur de messages envoyés sur le serveur
 	let idOfAuthor = msg.author.id;
 	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
-	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount};
+	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount, "firstJoinDate": memberStats[idOfAuthor].firstJoinDate};
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
@@ -103,7 +103,7 @@ client.on('messageCreate', msg => {
 							msg.channel.send('Ne pourchasser jamais un Singed !');
 							break;
 						case '2':
-							msg.channel.send('Si vous jouer l\'un de ces champions vous serez banni de ce serveur ! \n **Ekko (Mid), Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
+							msg.channel.send('Si l\'un de ces champions est votre main, vous vous en prendrez plein la gueule par les membres de ce serveur ! \n **Ekko (Mid), Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
 							break;
 						case '3':
 							msg.channel.send('Tout conflit doit être réglé par un <#1014611950568734851>');
