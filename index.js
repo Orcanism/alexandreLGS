@@ -36,7 +36,7 @@ client.on('ready', () => {
 client.on('guildMemberAdd', member => {
 	member.roles.add(992849670248341714);
 	if (!memberStats.hasOwnProperty(member.id)) {
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt}
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 	}
@@ -47,8 +47,11 @@ client.on('messageCreate', msg => {
 	if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
 	// Compteur de messages envoyés sur le serveur
-	let idOfAuthor = msg.author.id
-	let usernameOfAuthor = msg.author.username
+	let idOfAuthor = msg.author.id;
+	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
+	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount};
+	let memberStatsPush = JSON.stringify(memberStats, null, 4);
+	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
 	// Vérifie que le message débute avec le préfixe
 	if (msg.channel.type !== "dm" && !msg.author.bot) {
