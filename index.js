@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES]});
+const client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
 const fs = require('fs');
 const https = require('https');
 const jsdom = require('jsdom');
@@ -11,6 +11,7 @@ const { resolve } = require('path');
 client.login(private.token);
 
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
+const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche"}
 
 // Fonction httpsGet, permet de faire une requete https async
 async function httpsGet(url, callback) {
@@ -21,6 +22,9 @@ async function httpsGet(url, callback) {
         });
     });
 }
+
+// Selecteur de role
+
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -34,7 +38,7 @@ client.on('ready', () => {
 
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
 client.on('guildMemberAdd', member => {
-	member.roles.add(992849670248341714);
+	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
