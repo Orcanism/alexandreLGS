@@ -13,6 +13,20 @@ client.login(private.token);
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
 const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche"}
 
+// Selecteur de role
+var row = new Discord.MessageActionRow().addComponents(
+	new Discord.MessageSelectMenu()
+		.setCustomId('roleSelector')
+		.setPlaceholder('Choisis ta sauce !')
+		.addOptions([
+			{emoji: '🍅', label: 'Knack ketchup', value: 'ketchup'},
+			{emoji: '🥚', label: 'Knack mayonnaise', value: 'mayonnaise'},
+			{emoji: '🧴', label: 'Knack moutarde', value: 'moutarde'},
+			{emoji: '🇨🇳', label: 'Knack sauce chinoise', value: 'sauceChinoise'},
+			{emoji: '⚪', label: 'Knack sauce blanche', value: 'sauceBlanche'}
+		])
+)
+
 // Fonction httpsGet, permet de faire une requete https async
 async function httpsGet(url, callback) {
     return new Promise((resolve, reject) => {
@@ -22,9 +36,6 @@ async function httpsGet(url, callback) {
         });
     });
 }
-
-// Selecteur de role
-
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
@@ -43,6 +54,30 @@ client.on('guildMemberAdd', member => {
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+	}
+});
+
+client.on('interactionCreate', interaction => {
+	if (interaction.isSelectMenu()) {
+		if (interaction.customId === 'roleSelector') {
+			console.log(interaction.values);
+
+			if (interaction.values == 'ketchup') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
+			}
+			else if (interaction.values == 'mayonnaise') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
+			}
+			else if (interaction.values == 'moutarde') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
+			}
+			else if (interaction.values == 'sauceChinoise') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise!', ephemeral: true});
+			}
+			else if (interaction.values == 'sauceBlanche') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
+			}
+		}
 	}
 });
 
@@ -73,11 +108,12 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
+				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
 			else if (cmd === 'testtest') {
-				msg.channel.send('salut');
+				msg.channel.send(':white_circle:');
 			}
 
 			// Commande ping, envoi le ping du bot en milliseconde
@@ -178,4 +214,4 @@ client.on('messageCreate', msg => {
 			}
 		}
 	}
-});
+})
