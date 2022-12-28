@@ -37,6 +37,11 @@ async function httpsGet(url, callback) {
     });
 }
 
+// Fonction oldRoleRemover, retire l'ancien role de sauce de l'utilisateur
+function oldRoleRemover(member) {
+	
+}
+
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
 function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
@@ -60,22 +65,31 @@ client.on('guildMemberAdd', member => {
 client.on('interactionCreate', interaction => {
 	if (interaction.isSelectMenu()) {
 		if (interaction.customId === 'roleSelector') {
-			console.log(interaction.values);
 
 			if (interaction.values == 'ketchup') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
+				// oldRoleRemover(interaction.member);
+				interaction.member.roles.add('992849670248341714');
 			}
 			else if (interaction.values == 'mayonnaise') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
+				// oldRoleRemover(interaction.member);
+				interaction.member.roles.add('1050446801817317496');
 			}
 			else if (interaction.values == 'moutarde') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
+				// oldRoleRemover(interaction.member);
+				interaction.member.roles.add('992796420941811812');
 			}
 			else if (interaction.values == 'sauceChinoise') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise!', ephemeral: true});
+				// oldRoleRemover(interaction.member);
+				interaction.member.roles.add('1057325637951569961');
 			}
 			else if (interaction.values == 'sauceBlanche') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
+				// oldRoleRemover(interaction.member);
+				interaction.member.roles.add('1054889587610243133');
 			}
 		}
 	}
