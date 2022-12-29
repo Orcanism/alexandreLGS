@@ -39,7 +39,26 @@ async function httpsGet(url, callback) {
 
 // Fonction oldRoleRemover, retire l'ancien role de sauce de l'utilisateur
 function oldRoleRemover(member) {
-	
+	// Enleve le ketchup
+	if(member.roles.cache.has('992849670248341714')){
+		member.roles.remove('992849670248341714');
+	}
+	// Enleve la mayonnaise
+	if(member.roles.cache.has('1050446801817317496')){
+		member.roles.remove('1050446801817317496');
+	}
+	// Enleve la moutarde
+	if(member.roles.cache.has('992796420941811812')){
+		member.roles.remove('992796420941811812');
+	}
+	// Enleve la sauce chinoise
+	if(member.roles.cache.has('1057325637951569961')){
+		member.roles.remove('1057325637951569961');
+	}
+	// Enleve la sauce blanche
+	if(member.roles.cache.has('1054889587610243133')){
+		member.roles.remove('1054889587610243133');
+	}
 }
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
@@ -68,27 +87,27 @@ client.on('interactionCreate', interaction => {
 
 			if (interaction.values == 'ketchup') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('992849670248341714');
 			}
 			else if (interaction.values == 'mayonnaise') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1050446801817317496');
 			}
 			else if (interaction.values == 'moutarde') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('992796420941811812');
 			}
 			else if (interaction.values == 'sauceChinoise') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise!', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise !', ephemeral: true});
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1057325637951569961');
 			}
 			else if (interaction.values == 'sauceBlanche') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1054889587610243133');
 			}
 		}
@@ -101,8 +120,11 @@ client.on('messageCreate', msg => {
 
 	// Compteur de messages envoyés sur le serveur
 	let idOfAuthor = msg.author.id;
+
+	// !!!! IL FAUT REPARER WIUIUIUIUIU !!!!
 	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
 	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount, "firstJoinDate": memberStats[idOfAuthor].firstJoinDate};
+	
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
