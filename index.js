@@ -120,8 +120,6 @@ client.on('messageCreate', msg => {
 
 	// Compteur de messages envoyés sur le serveur
 	let idOfAuthor = msg.author.id;
-
-	// !!!! IL FAUT REPARER WIUIUIUIUIU !!!!
 	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
 	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount, "firstJoinDate": memberStats[idOfAuthor].firstJoinDate};
 	
