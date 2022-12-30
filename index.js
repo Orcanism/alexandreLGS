@@ -11,7 +11,7 @@ const { resolve } = require('path');
 client.login(private.token);
 
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
-const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche"}
+const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche", curry: "Knack sauce curry"}
 
 // Selecteur de role
 var row = new Discord.MessageActionRow().addComponents(
@@ -23,7 +23,8 @@ var row = new Discord.MessageActionRow().addComponents(
 			{emoji: '🥚', label: 'Knack mayonnaise', value: 'mayonnaise'},
 			{emoji: '🧴', label: 'Knack moutarde', value: 'moutarde'},
 			{emoji: '🇨🇳', label: 'Knack sauce chinoise', value: 'sauceChinoise'},
-			{emoji: '⚪', label: 'Knack sauce blanche', value: 'sauceBlanche'}
+			{emoji: '⚪', label: 'Knack sauce blanche', value: 'sauceBlanche'},
+			{emoji: '🍛', label: 'Knack sauce curry', value: 'sauceCurry'}
 		])
 )
 
@@ -58,6 +59,10 @@ function oldRoleRemover(member) {
 	// Enleve la sauce blanche
 	if(member.roles.cache.has('1054889587610243133')){
 		member.roles.remove('1054889587610243133');
+	}
+	// Enleve la sauce curry
+	if(member.roles.cache.has('1058383818823843870')){
+		member.roles.remove('1058383818823843870');
 	}
 }
 
@@ -109,6 +114,11 @@ client.on('interactionCreate', interaction => {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
 				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1054889587610243133');
+			}
+			else if (interaction.values == 'sauceCurry') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce curry !', ephemeral: true});
+				oldRoleRemover(interaction.member);
+				interaction.member.roles.add('1058383818823843870');
 			}
 		}
 	}
