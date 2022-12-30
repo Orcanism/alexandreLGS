@@ -7,6 +7,7 @@ const jsdom = require('jsdom');
 const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
+const pick4meList = require('./pick4meList.json')
 const { resolve } = require('path');
 client.login(private.token);
 
@@ -152,10 +153,12 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
+
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
 			else if (cmd === 'testtest') {
+				msg.channel.send('salut')
 			}
 
 			else if (cmd === 'optionsroles') {
@@ -253,6 +256,45 @@ client.on('messageCreate', msg => {
                     })
                 })
 			}
+
+			// Commande pick4me, picking random thing
+			else if (cmd === 'pick4me') {
+                let rdmChampion = getRandomInt(pick4meList.champions.length);
+                let rdmRune = getRandomInt(pick4meList.runes.length);
+                let rdmItem = getRandomInt(pick4meList.items.length);
+                let championString = pick4meList.champions[rdmChampion];
+                let runeString = pick4meList.runes[rdmRune];
+                let itemString = pick4meList.items[rdmItem];
+                msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
+			}			
+
+			// Commande update, update la liste des champions, items et maybe runes A FINIR
+			/*
+			else if (cmd === 'updatepick4me') {
+				msg.channel.send('bruh1');
+				let link = {host: 'leagueoflegends.com', path: '/en-us/champions/'};
+				httpsGet(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+						msg.channel.send('bruh2');
+                        if (res.statusCode === 200) {
+							msg.channel.send('bruh3');
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+							let champ = document.getElementsByClassName("style__Text-n3ovyt-3 gMLOLF")[0].childNodes[0].textContent;
+							msg.channel.send('bruh4');
+							msg.channel.send(champ + '\n');
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
+			}
+			*/
 
 			// Commande credit, envoie les credits du bot
 			else if (cmd === 'credit') {
