@@ -142,12 +142,14 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
-				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
 			else if (cmd === 'testtest') {
-				msg.channel.send(':white_circle:');
+			}
+
+			else if (cmd === 'optionsroles') {
+				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
 			}
 
 			// Commande ping, envoi le ping du bot en milliseconde
@@ -171,7 +173,7 @@ client.on('messageCreate', msg => {
 				if (args.length == 1) {
 					switch (args[0]) {
 						case 'help':
- 							msg.channel.send('Les règles existante sont : 1, 2, 3, 34');
+ 							msg.channel.send('Les règles existante sont : 1, 2, 3, 4, 34');
 							break;
 						case '1':
 							msg.channel.send('Ne pourchasser jamais un Singed !');
