@@ -90,36 +90,40 @@ client.on('guildMemberAdd', member => {
 client.on('interactionCreate', interaction => {
 	if (interaction.isSelectMenu()) {
 		if (interaction.customId === 'roleSelector') {
-
-			if (interaction.values == 'ketchup') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('992849670248341714');
+			if (!interaction.member.roles.cache.has('992800118367600671') && !interaction.member.roles.cache.has('1037380761327775744')) {
+				if (interaction.values == 'ketchup') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('992849670248341714');
+				}
+				else if (interaction.values == 'mayonnaise') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('1050446801817317496');
+				}
+				else if (interaction.values == 'moutarde') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('992796420941811812');
+				}
+				else if (interaction.values == 'sauceChinoise') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('1057325637951569961');
+				}
+				else if (interaction.values == 'sauceBlanche') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('1054889587610243133');
+				}
+				else if (interaction.values == 'sauceCurry') {
+					interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce curry !', ephemeral: true});
+					oldRoleRemover(interaction.member);
+					interaction.member.roles.add('1058383818823843870');
+				}
 			}
-			else if (interaction.values == 'mayonnaise') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('1050446801817317496');
-			}
-			else if (interaction.values == 'moutarde') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('992796420941811812');
-			}
-			else if (interaction.values == 'sauceChinoise') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('1057325637951569961');
-			}
-			else if (interaction.values == 'sauceBlanche') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('1054889587610243133');
-			}
-			else if (interaction.values == 'sauceCurry') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce curry !', ephemeral: true});
-				oldRoleRemover(interaction.member);
-				interaction.member.roles.add('1058383818823843870');
+			else {
+			interaction.reply({content: 'Tu ne peux pas choisir une autre sauce car tu es déjà parfait comme ça !', ephemeral: true});
 			}
 		}
 	}
