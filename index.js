@@ -7,11 +7,12 @@ const jsdom = require('jsdom');
 const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
+const pick4meList = require('./pick4meList.json')
 const { resolve } = require('path');
 client.login(private.token);
 
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
-const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche"}
+const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche", curry: "Knack sauce curry"}
 
 // Selecteur de role
 var row = new Discord.MessageActionRow().addComponents(
@@ -23,7 +24,8 @@ var row = new Discord.MessageActionRow().addComponents(
 			{emoji: '🥚', label: 'Knack mayonnaise', value: 'mayonnaise'},
 			{emoji: '🧴', label: 'Knack moutarde', value: 'moutarde'},
 			{emoji: '🇨🇳', label: 'Knack sauce chinoise', value: 'sauceChinoise'},
-			{emoji: '⚪', label: 'Knack sauce blanche', value: 'sauceBlanche'}
+			{emoji: '⚪', label: 'Knack sauce blanche', value: 'sauceBlanche'},
+			{emoji: '🍛', label: 'Knack sauce curry', value: 'sauceCurry'}
 		])
 )
 
@@ -39,7 +41,30 @@ async function httpsGet(url, callback) {
 
 // Fonction oldRoleRemover, retire l'ancien role de sauce de l'utilisateur
 function oldRoleRemover(member) {
-	
+	// Enleve le ketchup
+	if(member.roles.cache.has('992849670248341714')){
+		member.roles.remove('992849670248341714');
+	}
+	// Enleve la mayonnaise
+	if(member.roles.cache.has('1050446801817317496')){
+		member.roles.remove('1050446801817317496');
+	}
+	// Enleve la moutarde
+	if(member.roles.cache.has('992796420941811812')){
+		member.roles.remove('992796420941811812');
+	}
+	// Enleve la sauce chinoise
+	if(member.roles.cache.has('1057325637951569961')){
+		member.roles.remove('1057325637951569961');
+	}
+	// Enleve la sauce blanche
+	if(member.roles.cache.has('1054889587610243133')){
+		member.roles.remove('1054889587610243133');
+	}
+	// Enleve la sauce curry
+	if(member.roles.cache.has('1058383818823843870')){
+		member.roles.remove('1058383818823843870');
+	}
 }
 
 // Fonction getRandomInt, permet de récupérer un nombre entier aléatoire strictement inférieur a max
@@ -68,28 +93,33 @@ client.on('interactionCreate', interaction => {
 
 			if (interaction.values == 'ketchup') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('992849670248341714');
 			}
 			else if (interaction.values == 'mayonnaise') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la mayonnaise !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1050446801817317496');
 			}
 			else if (interaction.values == 'moutarde') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la moutarde !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('992796420941811812');
 			}
 			else if (interaction.values == 'sauceChinoise') {
-				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise!', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce chinoise !', ephemeral: true});
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1057325637951569961');
 			}
 			else if (interaction.values == 'sauceBlanche') {
 				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce blanche !', ephemeral: true});
-				// oldRoleRemover(interaction.member);
+				oldRoleRemover(interaction.member);
 				interaction.member.roles.add('1054889587610243133');
+			}
+			else if (interaction.values == 'sauceCurry') {
+				interaction.reply({content: 'Très bien, tu seras mangé avec de la sauce curry !', ephemeral: true});
+				oldRoleRemover(interaction.member);
+				interaction.member.roles.add('1058383818823843870');
 			}
 		}
 	}
@@ -103,6 +133,7 @@ client.on('messageCreate', msg => {
 	let idOfAuthor = msg.author.id;
 	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
 	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount, "firstJoinDate": memberStats[idOfAuthor].firstJoinDate};
+	
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
@@ -117,17 +148,21 @@ client.on('messageCreate', msg => {
 			cmd = args.shift().toLowerCase();
 
 			if (cmd === 'help') {
-				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - meteo\n - credit');
+				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - credit');
 			}
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
-				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
+
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
 			else if (cmd === 'testtest') {
-				msg.channel.send(':white_circle:');
+				msg.channel.send('salut')
+			}
+
+			else if (cmd === 'optionsroles') {
+				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
 			}
 
 			// Commande ping, envoi le ping du bot en milliseconde
@@ -151,7 +186,7 @@ client.on('messageCreate', msg => {
 				if (args.length == 1) {
 					switch (args[0]) {
 						case 'help':
- 							msg.channel.send('Les règles existante sont : 1, 2, 3, 34');
+ 							msg.channel.send('Les règles existante sont : 1, 2, 3, 4, 34');
 							break;
 						case '1':
 							msg.channel.send('Ne pourchasser jamais un Singed !');
@@ -221,6 +256,45 @@ client.on('messageCreate', msg => {
                     })
                 })
 			}
+
+			// Commande pick4me, picking random thing
+			else if (cmd === 'pick4me') {
+                let rdmChampion = getRandomInt(pick4meList.champions.length);
+                let rdmRune = getRandomInt(pick4meList.runes.length);
+                let rdmItem = getRandomInt(pick4meList.items.length);
+                let championString = pick4meList.champions[rdmChampion];
+                let runeString = pick4meList.runes[rdmRune];
+                let itemString = pick4meList.items[rdmItem];
+                msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
+			}			
+
+			// Commande update, update la liste des champions, items et maybe runes A FINIR
+			/*
+			else if (cmd === 'updatepick4me') {
+				msg.channel.send('bruh1');
+				let link = {host: 'leagueoflegends.com', path: '/en-us/champions/'};
+				httpsGet(link, res => {
+                    let html = '';
+                    res.on('data', chunk => {
+                        html += chunk;
+                    });
+                    res.on('end', () => {
+						msg.channel.send('bruh2');
+                        if (res.statusCode === 200) {
+							msg.channel.send('bruh3');
+                            let htmlDOM = new jsdom.JSDOM(html);
+                            let document = htmlDOM.window.document;
+							let champ = document.getElementsByClassName("style__Text-n3ovyt-3 gMLOLF")[0].childNodes[0].textContent;
+							msg.channel.send('bruh4');
+							msg.channel.send(champ + '\n');
+                        }
+                        else if (res.statusCode !== 200) {
+                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+                        }
+                    })
+                })
+			}
+			*/
 
 			// Commande credit, envoie les credits du bot
 			else if (cmd === 'credit') {
