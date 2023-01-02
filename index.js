@@ -72,6 +72,17 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 
+// Fonction getDate, donne une date au format europeen
+// function getDate() {
+// 	let day = Date.prototype.getDate();
+// 	if (day < 10) {day = '0' + day};
+// 	let month = Date.prototype.getMonth();
+// 	if (month < 10) {month = '0' + month};
+// 	let year = Date.prototype.getFullYear();
+// 	let date = day + '/' + month + '/' + year;
+// 	return date;
+// }
+
 // Actions s'éxécutant au démarage du bot
 client.on('ready', () => {
 	console.log('Alexandre is ready !');
@@ -81,6 +92,7 @@ client.on('ready', () => {
 client.on('guildMemberAdd', member => {
 	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
+		// let joinDate = getDate();
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
@@ -157,7 +169,6 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
-
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
@@ -299,6 +310,18 @@ client.on('messageCreate', msg => {
                 })
 			}
 			*/
+
+			// Commande leaderboard, envoie les 3 membres les plus actifs du serveur
+			else if (cmd === 'leaderboard') {
+
+			}
+
+			// Commande me, envoie les informations de l'utilisateur qui appelle la commande
+			else if (cmd === 'me') {
+				let authorMessageCount = memberStats[msg.author.id].messageCount;
+				let authorFirstJoinDate = memberStats[msg.author.id].firstJoinDate;
+				msg.channel.send('Tu as envoyé **' + authorMessageCount + '** et tu as rejoins le serveur pour la première fois le **' + authorFirstJoinDate + '**');
+			}
 
 			// Commande credit, envoie les credits du bot
 			else if (cmd === 'credit') {
