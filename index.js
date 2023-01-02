@@ -71,17 +71,6 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 
-// Fonction getDate, donne une date au format europeen
-// function getDate() {
-// 	let day = Date.prototype.getDate();
-// 	if (day < 10) {day = '0' + day};
-// 	let month = Date.prototype.getMonth();
-// 	if (month < 10) {month = '0' + month};
-// 	let year = Date.prototype.getFullYear();
-// 	let date = day + '/' + month + '/' + year;
-// 	return date;
-// }
-
 // Fonction getDateElements, donne l'année, le mois ou le jour
 function getDateElements(fullDate, elementOfDate) {
 	if (elementOfDate === "day") {
@@ -96,8 +85,20 @@ function getDateElements(fullDate, elementOfDate) {
 		year = fullDate.slice(6, 10);
 		return year;
 	}
-	else { interaction.reply({content: 'ce n\'est pas une date !', ephemeral: true});
+	else { interaction.reply({content: 'Ce n\'est pas une date !', ephemeral: true});
 	}
+}
+
+// Fonction formatDate, renvoie la date du jour au format dd/mm/yyyy
+function formatDate(date) {
+	return [
+		padTo2Digits(date.getDate()),
+	  	padTo2Digits(date.getMonth() + 1),
+	  	date.getFullYear(),
+	].join('/');
+}
+function padTo2Digits(num) {
+	return num.toString().padStart(2, '0');
 }
 
 // Actions s'éxécutant au démarage du bot
@@ -109,8 +110,7 @@ client.on('ready', () => {
 client.on('guildMemberAdd', member => {
 	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
-		// let joinDate = getDate();
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": member.joinedAt};
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 	}
@@ -181,11 +181,12 @@ client.on('messageCreate', msg => {
 			cmd = args.shift().toLowerCase();
 
 			if (cmd === 'help') {
-				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - credit');
+				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - leaderboard (ca marche pas encore)\n - me\n - credit');
 			}
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
+				msg.channel.send(formatDate(new Date()));
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
@@ -335,7 +336,6 @@ client.on('messageCreate', msg => {
 			else if (cmd === 'me') {
 				let authorMessageCount = memberStats[msg.author.id].messageCount;
 				let authorFirstJoinDate = memberStats[msg.author.id].firstJoinDate;
-				msg.channel.send('Tu as envoyé **' + authorMessageCount + '** et tu as rejoins le serveur pour la première fois le **' + authorFirstJoinDate + '**');
 
 				let dayOfJoin = getDateElements(authorFirstJoinDate, "day");
 				let monthOfJoin = getDateElements(authorFirstJoinDate, "month");
@@ -343,10 +343,9 @@ client.on('messageCreate', msg => {
 
 				let nowTime = new Date();
 				let joinTime = new Date(yearOfJoin, monthOfJoin, dayOfJoin);
-				let timeBetween = nowTime.getTime() - joinTime.getTime();
-				timeBetween = (timeBetween/(1000*60*60*24));
-				
-				msg.channel.send("la différence est " + timeBetween);
+				let timeBetween = Math.round((nowTime.getTime() - joinTime.getTime()) / 86400000);
+				let averageDayMessage = (authorMessageCount / timeBetween).toFixed(2);
+				msg.channel.send('Tu as envoyé **' + authorMessageCount + '** messages et tu as rejoins le serveur pour la première fois le **' + authorFirstJoinDate + '** ce qui fait une moyenne de **' + averageDayMessage + '** message(s) par jour !');
 			}
 
 			// Commande credit, envoie les credits du bot
