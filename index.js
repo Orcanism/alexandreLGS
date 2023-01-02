@@ -269,10 +269,9 @@ client.on('messageCreate', msg => {
 			}			
 
 			// Commande update, update la liste des champions, items et maybe runes A FINIR
-			/*
 			else if (cmd === 'updatepick4me') {
 				msg.channel.send('bruh1');
-				let link = {host: 'leagueoflegends.com', path: '/en-us/champions/'};
+				let link = {host: 'leagueoflegends.com', path: '/fr-fr/champions/'};
 				httpsGet(link, res => {
                     let html = '';
                     res.on('data', chunk => {
@@ -280,11 +279,11 @@ client.on('messageCreate', msg => {
                     });
                     res.on('end', () => {
 						msg.channel.send('bruh2');
-                        if (res.statusCode === 200) {
+                        if (res.statusCode === 302) {
 							msg.channel.send('bruh3');
                             let htmlDOM = new jsdom.JSDOM(html);
                             let document = htmlDOM.window.document;
-							let champ = document.getElementsByClassName("style__Text-n3ovyt-3 gMLOLF")[0].childNodes[0].textContent;
+							let champ = document.getElementsByClassName("style__Text-n3ovyt-3 gMLOLF")[0];
 							msg.channel.send('bruh4');
 							msg.channel.send(champ + '\n');
                         }
@@ -294,7 +293,6 @@ client.on('messageCreate', msg => {
                     })
                 })
 			}
-			*/
 
 			// Commande credit, envoie les credits du bot
 			else if (cmd === 'credit') {
