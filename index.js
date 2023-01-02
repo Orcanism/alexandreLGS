@@ -90,7 +90,7 @@ client.on('guildMemberAdd', member => {
 client.on('interactionCreate', interaction => {
 	if (interaction.isSelectMenu()) {
 		if (interaction.customId === 'roleSelector') {
-			if (!interaction.member.roles.cache.has('992800118367600671') || !interaction.member.roles.cache.has('1037380761327775744')) {
+			if (!(interaction.member.roles.cache.has('992800118367600671') || interaction.member.roles.cache.has('1037380761327775744'))) {
 				if (interaction.values == 'ketchup') {
 					interaction.reply({content: 'Très bien, tu seras mangé avec du ketchup !', ephemeral: true});
 					oldRoleRemover(interaction.member);
