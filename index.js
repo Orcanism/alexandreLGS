@@ -12,7 +12,6 @@ const { resolve } = require('path');
 client.login(private.token);
 
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
-const roleEmojis = {tomato: "Knack ketchup", egg: "Knack mayonnaise", squeeze_bottle: "Knack moutarde", flag_cn: "Knack sauce chinoise", white_circle: "Knack sauce blanche", curry: "Knack sauce curry"}
 
 // Selecteur de role
 var row = new Discord.MessageActionRow().addComponents(
@@ -82,6 +81,24 @@ function getRandomInt(max) {
 // 	let date = day + '/' + month + '/' + year;
 // 	return date;
 // }
+
+// Fonction getDateElements, donne l'année, le mois ou le jour
+function getDateElements(fullDate, elementOfDate) {
+	if (elementOfDate === "day") {
+		day = fullDate.slice(0, 2);
+		return day;
+	}
+	else if (elementOfDate === "month") {
+		month = fullDate.slice(3, 5);
+		return month;
+	}
+	else if (elementOfDate === "year") {
+		year = fullDate.slice(6, 10);
+		return year;
+	}
+	else { interaction.reply({content: 'ce n\'est pas une date !', ephemeral: true});
+	}
+}
 
 // Actions s'éxécutant au démarage du bot
 client.on('ready', () => {
@@ -319,6 +336,17 @@ client.on('messageCreate', msg => {
 				let authorMessageCount = memberStats[msg.author.id].messageCount;
 				let authorFirstJoinDate = memberStats[msg.author.id].firstJoinDate;
 				msg.channel.send('Tu as envoyé **' + authorMessageCount + '** et tu as rejoins le serveur pour la première fois le **' + authorFirstJoinDate + '**');
+
+				let dayOfJoin = getDateElements(authorFirstJoinDate, "day");
+				let monthOfJoin = getDateElements(authorFirstJoinDate, "month");
+				let yearOfJoin = getDateElements(authorFirstJoinDate, "year");
+
+				let nowTime = new Date();
+				let joinTime = new Date(yearOfJoin, monthOfJoin, dayOfJoin);
+				let timeBetween = nowTime.getTime() - joinTime.getTime();
+				timeBetween = (timeBetween/(1000*60*60*24));
+				
+				msg.channel.send("la différence est " + timeBetween);
 			}
 
 			// Commande credit, envoie les credits du bot
