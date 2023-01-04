@@ -179,7 +179,7 @@ client.on('messageCreate', msg => {
 			cmd = args.shift().toLowerCase();
 
 			if (cmd === 'help') {
-				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - leaderboard (ca marche pas encore)\n - me\n - credit');
+				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - leaderboard\n - me\n - credit');
 			}
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
