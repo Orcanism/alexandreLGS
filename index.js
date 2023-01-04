@@ -90,15 +90,13 @@ function getDateElements(fullDate, elementOfDate) {
 }
 
 // Fonction formatDate, renvoie la date du jour au format dd/mm/yyyy
+function padTo2Digits(num) {return num.toString().padStart(2, '0');}
 function formatDate(date) {
 	return [
 		padTo2Digits(date.getDate()),
 	  	padTo2Digits(date.getMonth() + 1),
 	  	date.getFullYear(),
 	].join('/');
-}
-function padTo2Digits(num) {
-	return num.toString().padStart(2, '0');
 }
 
 // Actions s'éxécutant au démarage du bot
@@ -186,7 +184,6 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
-				msg.channel.send(formatDate(new Date()));
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
@@ -291,7 +288,7 @@ client.on('messageCreate', msg => {
                 })
 			}
 
-			// Commande pick4me, picking random thing
+			// Commande pick4me, choisis un build aleatoire pour league of legends
 			else if (cmd === 'pick4me') {
                 let rdmChampion = getRandomInt(pick4meList.champions.length);
                 let rdmRune = getRandomInt(pick4meList.runes.length);
@@ -300,32 +297,27 @@ client.on('messageCreate', msg => {
                 let runeString = pick4meList.runes[rdmRune];
                 let itemString = pick4meList.items[rdmItem];
                 msg.channel.send('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
-			}			
+			}
 
-			// Commande update, update la liste des champions, items et maybe runes A FINIR
+			// Commande updatepick4me, met a jour la liste des champions pour la commande pick4me
 			else if (cmd === 'updatepick4me') {
-				msg.channel.send('bruh1');
-				let link = {host: 'leagueoflegends.com', path: '/fr-fr/champions/'};
+				let link = {host: 'liquipedia.net', path: '/leagueoflegends/Champions'};
 				httpsGet(link, res => {
-                    let html = '';
-                    res.on('data', chunk => {
-                        html += chunk;
-                    });
-                    res.on('end', () => {
-						msg.channel.send('bruh2');
-                        if (res.statusCode === 302) {
-							msg.channel.send('bruh3');
-                            let htmlDOM = new jsdom.JSDOM(html);
-                            let document = htmlDOM.window.document;
-							let champ = document.getElementsByClassName("style__Text-n3ovyt-3 gMLOLF")[0];
-							msg.channel.send('bruh4');
-							msg.channel.send(champ + '\n');
-                        }
-                        else if (res.statusCode !== 200) {
-                            msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
-                        }
-                    })
-                })
+					let html = '';
+					res.on('data', chunk => {
+						html += chunk;
+					});
+					res.on('end', () => {
+						if (res.statusCode === 200) {
+							let htmlDOM = new jsdom.JSDOM(html);
+							let document = htmlDOM.window.document;
+							msg.channel.send('it worked');
+						}
+						else if (res.statusCode !== 200) {
+							msg.channel.send('L\'erreur ' + res.statusCode + ' est survenue. Veuillez réessayer');
+						}
+					})
+				})
 			}
 
 			// Commande leaderboard, envoie les 3 membres les plus actifs du serveur
