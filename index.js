@@ -194,6 +194,7 @@ client.on('messageCreate', msg => {
 				msg.channel.send('salut')
 			}
 
+			// Commande optionsroles, envoie le message avec la lsite deroulante pour selectionner son role
 			else if (cmd === 'optionsroles') {
 				msg.channel.send({content: 'Sélectionne l\'une de ces options pour choisir la sauce avec laquelle tu veux être mangé', components: [row]});
 			}
