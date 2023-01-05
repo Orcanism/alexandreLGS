@@ -3,6 +3,7 @@ const client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Disco
 const fs = require('fs');
 const https = require('https');
 const jsdom = require('jsdom');
+const cron = require('cron');
 
 const config = require('./config.json');
 const private = require('./private.json');
