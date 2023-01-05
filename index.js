@@ -162,10 +162,7 @@ client.on('messageCreate', msg => {
 	if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
 	// Compteur de messages envoyés sur le serveur
-	let idOfAuthor = msg.author.id;
-	let authorMessageCount = memberStats[idOfAuthor].messageCount + 1;
-	memberStats[idOfAuthor] = {"username": msg.author.username, "messageCount": authorMessageCount, "firstJoinDate": memberStats[idOfAuthor].firstJoinDate};
-	
+	memberStats[msg.author.id].messageCount += 1;
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
@@ -180,17 +177,7 @@ client.on('messageCreate', msg => {
 			cmd = args.shift().toLowerCase();
 
 			if (cmd === 'help') {
-				msg.channel.send('Les commandes disponibles sont: \n - ping\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - leaderboard\n - me\n - credit');
-			}
-
-			// Commande test, permet de tester les choses qui ont besoin d'être testées
-			else if (cmd === 'test') {
-
-			}
-
-			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
-			else if (cmd === 'testtest') {
-				msg.channel.send('salut')
+				msg.channel.send('Les commandes disponibles sont: \n - birthday\n - papagei\n - nationalite\n - rule\n - uwu\n - pick4me\n - meteo\n - leaderboard\n - me\n - credit');
 			}
 
 			// Commande optionsroles, envoie le message avec la lsite deroulante pour selectionner son role
@@ -204,9 +191,43 @@ client.on('messageCreate', msg => {
 				console.log(client.ws.ping + ' ms');
 			}
 
+			// Commande test, permet de tester les choses qui ont besoin d'être testées
+			else if (cmd === 'test') {
+
+			}
+
+			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
+			else if (cmd === 'testtest') {
+				msg.channel.send('salut')
+			}
+
+			// Commande birthday, permet d'editer sa date d'anniversaire dans le fichier memberStats
+			else if (cmd === 'birthday') {
+				if (args.length == 1) {
+					let regex = new RegExp(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/gm);
+					if (regex.test(args[0])) {
+						memberStats[msg.author.id].birthday = args[0];
+						let memberStatsPush = JSON.stringify(memberStats, null, 4);
+						fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+						msg.channel.send('Votre anniversaire a bien été mis à jour !');
+					}
+					else {
+						msg.channel.send('Le format de la date est incorrecte, le format demandé est : **dd/mm/yyyy**');
+					}
+				}
+				else {
+					msg.channel.send(incorrectArgument);
+				}
+			}
+
 			// Commande papagei, repete le message envoyer par l'utilisateur
 			else if (cmd === 'papagei') {
-				msg.channel.send(args.join(' '));
+				if (args.length > 0) {
+					msg.channel.send(args.join(' '));
+				}
+				else {
+					msg.channel.send(incorrectArgument);
+				}
 			}
 
 			// Commande nationalite, petit message pour trigger mousse
