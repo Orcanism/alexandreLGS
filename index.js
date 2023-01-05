@@ -9,6 +9,7 @@ const private = require('./private.json');
 const memberStats = require('./memberStats.json');
 const pick4meList = require('./pick4meList.json')
 const { resolve } = require('path');
+const { time } = require('console');
 client.login(private.token);
 
 const incorrectArgument = 'Les arguments saisis sont incorrects pour cette commande';
@@ -184,6 +185,7 @@ client.on('messageCreate', msg => {
 
 			// Commande test, permet de tester les choses qui ont besoin d'être testées
 			else if (cmd === 'test') {
+
 			}
 
 			// Commande testtest, la commande test pour bubu. !! breaks the code if removed !!
@@ -345,7 +347,7 @@ client.on('messageCreate', msg => {
 				let authorFirstJoinDate = memberStats[msg.author.id].firstJoinDate;
 
 				let dayOfJoin = getDateElements(authorFirstJoinDate, "day");
-				let monthOfJoin = getDateElements(authorFirstJoinDate, "month");
+				let monthOfJoin = getDateElements(authorFirstJoinDate, "month") - 1;
 				let yearOfJoin = getDateElements(authorFirstJoinDate, "year");
 
 				let nowTime = new Date();
