@@ -104,6 +104,31 @@ function formatDate(date) {
 // Actions s'éxécutant au démarage du bot
 client.on('ready', () => {
 	console.log('Alexandre is ready !');
+	let birthday = new cron.CronJob('0 30 09 * * *', action => {
+		let hasBirthday = [];
+		for (let i = 0; i < Object.keys(memberStats).length; i++) {
+			let arrayKey = Object.keys(memberStats)[i];
+			if (memberStats[arrayKey].hasOwnProperty('birthday')) {
+				if (memberStats[arrayKey].birthday.slice(0,-5) == formatDate(new Date()).slice(0,-5)) {
+					let age = formatDate(new Date()).slice(-4) - memberStats[arrayKey].birthday.slice(-4);
+					hasBirthday.push(memberStats[arrayKey].username + '(' + age + ' ans)');
+				}
+			}
+		}
+		if (hasBirthday.length == 0) {
+			return;
+		}
+		else if (hasBirthday.length == 1) {
+			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + '**');
+		}
+		else if (hasBirthday.length == 2) {
+			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + '** et à **' + hasBirthday[1] + '**');
+		}
+		else if (hasBirthday.length == 3) {
+			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + ', ' + hasBirthday[1] + '** et à **' + hasBirthday[2] + '**');
+		}
+	});
+	birthday.start();
 });
 
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
@@ -164,6 +189,7 @@ client.on('messageCreate', msg => {
 
 	// Compteur de messages envoyés sur le serveur
 	memberStats[msg.author.id].messageCount += 1;
+	memberStats[msg.author.id].username = msg.author.username;
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 
