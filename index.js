@@ -1,5 +1,10 @@
 const Discord = require('discord.js');
-const client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS]});
+const client = new Discord.Client({intents:[
+	Discord.Intents.FLAGS.GUILDS,
+	Discord.Intents.FLAGS.GUILD_MESSAGES,
+	Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+	Discord.Intents.FLAGS.GUILD_MEMBERS
+]});
 const fs = require('fs');
 const https = require('https');
 const jsdom = require('jsdom');
@@ -75,20 +80,11 @@ function getRandomInt(max) {
 
 // Fonction getDateElements, donne l'année, le mois ou le jour
 function getDateElements(fullDate, elementOfDate) {
-	if (elementOfDate === "day") {
-		day = fullDate.slice(0, 2);
-		return day;
-	}
-	else if (elementOfDate === "month") {
-		month = fullDate.slice(3, 5);
-		return month;
-	}
-	else if (elementOfDate === "year") {
-		year = fullDate.slice(6, 10);
-		return year;
-	}
-	else { interaction.reply({content: 'Ce n\'est pas une date !', ephemeral: true});
-	}
+	let dateElements = fullDate.split('/');
+	if (elementOfDate === "day") {return dateElements[0];}
+	else if (elementOfDate === "month") {return dateElements[1];}
+	else if (elementOfDate === "year") {return dateElements[2];}
+	else {interaction.reply({content: 'Ce n\'est pas une date !', ephemeral: true})}
 }
 
 // Fonction formatDate, renvoie la date du jour au format dd/mm/yyyy
@@ -138,6 +134,7 @@ client.on('guildMemberAdd', member => {
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 1, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+		client.channels.cache.get('992797701299245206').send('l\'ajout du nouveau membre a memberStats a fonctionné');
 	}
 });
 
