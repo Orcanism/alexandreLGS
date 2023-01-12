@@ -19,7 +19,7 @@ module.exports = {
                     let document = htmlDOM.window.document;
                     let temp = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[0].textContent;
                     let sky = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[1].textContent.toLowerCase();
-                    msg.reply('À Skopje il fait **' + temp + '** avec un ciel **' + sky + '**');
+                    msg.reply(`À Skopje il fait **${temp}** avec un ciel **${sky}**`);
                 }
                 else if (res.statusCode !== 200) {
                     msg.reply({content: `L\'erreur ${res.statusCode} est survenue. Veuillez réessayer`, ephemeral : true});

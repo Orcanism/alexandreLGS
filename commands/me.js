@@ -26,6 +26,6 @@ module.exports = {
         let joinTime = new Date(yearOfJoin, monthOfJoin, dayOfJoin);
         let timeBetween = Math.round((nowTime.getTime() - joinTime.getTime()) / 86400000);
         let averageDayMessage = (authorMessageCount / timeBetween).toFixed(2);
-        msg.reply('Tu as envoyé **' + authorMessageCount + '** messages et tu as rejoins le serveur pour la première fois le **' + authorFirstJoinDate + '** ce qui fait une moyenne de **' + averageDayMessage + '** message(s) par jour !');
+        msg.reply(`Tu as envoyé **${authorMessageCount}** messages et tu as rejoins le serveur pour la première fois le **${authorFirstJoinDate}** ce qui fait une moyenne de **${averageDayMessage}** message(s) par jour !`);
     }
 }

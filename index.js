@@ -61,7 +61,7 @@ client.on('ready', async () => {
 			if (memberStats[arrayKey].hasOwnProperty('birthday')) {
 				if (memberStats[arrayKey].birthday.slice(0,-5) == formatDate(new Date()).slice(0,-5)) {
 					let age = formatDate(new Date()).slice(-4) - memberStats[arrayKey].birthday.slice(-4);
-					hasBirthday.push(memberStats[arrayKey].username + '(' + age + ' ans)');
+					hasBirthday.push(`${memberStats[arrayKey].username} (${age} ans)`);
 				}
 			}
 		}
@@ -69,13 +69,13 @@ client.on('ready', async () => {
 			return;
 		}
 		else if (hasBirthday.length == 1) {
-			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + '**');
+			client.channels.cache.get('985210201424674890').send(`@everyone Souhaitez tous un joyeux anniversaire à **${hasBirthday[0]}**`);
 		}
 		else if (hasBirthday.length == 2) {
-			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + '** et à **' + hasBirthday[1] + '**');
+			client.channels.cache.get('985210201424674890').send(`@everyone Souhaitez tous un joyeux anniversaire à **${hasBirthday[0]}** et à **${hasBirthday[1]}**`);
 		}
 		else if (hasBirthday.length == 3) {
-			client.channels.cache.get('985210201424674890').send('@everyone Souhaitez tous un joyeux anniversaire à **' + hasBirthday[0] + ', ' + hasBirthday[1] + '** et à **' + hasBirthday[2] + '**');
+			client.channels.cache.get('985210201424674890').send(`@everyone Souhaitez tous un joyeux anniversaire à **${hasBirthday[0]}, ${hasBirthday[1]}** et à **${hasBirthday[2]}**`);
 		}
 	});
 	birthday.start();

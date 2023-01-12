@@ -16,10 +16,10 @@ module.exports = {
                 return -1;
             }
         }).slice(0, 4);
-        let firstPlace = ':first_place: **- ' + leaderboardArray[0].username + '** avec **' + leaderboardArray[0].messageCount + '** messages !';
-        let secondPlace = ':second_place: **- ' + leaderboardArray[1].username + '** avec **' + leaderboardArray[1].messageCount + '** messages !';
-        let thirdPlace = ':third_place: **- ' + leaderboardArray[2].username + '** avec **' + leaderboardArray[2].messageCount + '** messages !';
-        let fourthPlace = ':chocolate_bar: **- ' + leaderboardArray[3].username + '** avec **' + leaderboardArray[3].messageCount + '** messages !';
+        let firstPlace = `:first_place: **- ${leaderboardArray[0].username}** avec **${leaderboardArray[0].messageCount}** messages !`;
+        let secondPlace = `:second_place: **- ${leaderboardArray[1].username}** avec **${leaderboardArray[1].messageCount}** messages !`;
+        let thirdPlace = `:third_place: **- ${leaderboardArray[2].username}** avec **${leaderboardArray[2].messageCount}** messages !`;
+        let fourthPlace = `:chocolate_bar: **- ${leaderboardArray[3].username}** avec **${leaderboardArray[3].messageCount}** messages !`;
         msg.reply('Voici les knacks les plus actives du serveur !\n\n' + firstPlace + '\n' + secondPlace + '\n' + thirdPlace + '\n' + fourthPlace);
     }
 }

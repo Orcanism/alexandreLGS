@@ -16,6 +16,6 @@ module.exports = {
         let championString = pick4meList.champions[rdmChampion];
         let runeString = pick4meList.runes[rdmRune];
         let itemString = pick4meList.items[rdmItem];
-        msg.reply('Aujourd\'hui, tu vas jouer **' + championString + '** avec la Rune **' + runeString + '** et avec comme Item mythic, **' + itemString + '**');
+        msg.reply(`Aujourd\'hui, tu vas jouer **${championString}** avec la Rune **${runeString}** et avec comme Item mythic, **${itemString}**`);
     }
 }
