@@ -144,7 +144,11 @@ client.on('messageCreate', async msg => {
     if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
 	// Compteur de messages envoyés sur le serveur
-	memberStats[msg.author.id].messageCount += 1;
+	let numberToAdd = 1
+	if (msg.content.match(/\n/gm)) {
+		numberToAdd += msg.content.match(/\n/gm).length
+	}
+	memberStats[msg.author.id].messageCount += numberToAdd;
 	memberStats[msg.author.id].username = msg.author.username;
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
