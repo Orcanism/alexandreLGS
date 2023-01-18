@@ -86,7 +86,7 @@ client.on('ready', async () => {
 client.on('guildMemberAdd', member => {
 	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 1, "firstJoinDate": formatDate(new Date())};
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 		client.channels.cache.get('992797701299245206').send('l\'ajout du nouveau membre a memberStats a fonctionné');
