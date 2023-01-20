@@ -89,7 +89,6 @@ client.on('guildMemberAdd', member => {
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
-		client.channels.cache.get('992797701299245206').send('l\'ajout du nouveau membre a memberStats a fonctionné');
 	}
 });
 

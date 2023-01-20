@@ -15,7 +15,7 @@ module.exports = {
     async run(client, msg, args, author) {
         switch (args._hoistedOptions[0].value) {
             case 1:
-                msg.reply('Ne pourchasser jamais un Singed !');
+                msg.reply('Ne pourchassez jamais un Singed !');
                 break;
             case 2:
                 msg.reply('Si l\'un de ces champions est votre main, vous vous en prendrez plein la gueule par les membres de ce serveur ! \n **Ekko (Mid), Fizz, Master Yi, Teemo, Vayne (Top), Warwick, Yasuo, Yone, Yuumi**');
