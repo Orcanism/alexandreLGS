@@ -5,7 +5,6 @@ const slashCommandHandler = require('./handlers/slashCommandsHanlder');
 const fs = require('fs');
 const cron = require('cron');
 
-const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
 
