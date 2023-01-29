@@ -21,5 +21,5 @@ module.exports = {
         let thirdPlace = `:third_place: **- ${leaderboardArray[2].username}** avec **${leaderboardArray[2].messageCount}** messages !`;
         let fourthPlace = `:chocolate_bar: **- ${leaderboardArray[3].username}** avec **${leaderboardArray[3].messageCount}** messages !`;
         msg.reply('Voici les knacks les plus actives du serveur !\n\n' + firstPlace + '\n' + secondPlace + '\n' + thirdPlace + '\n' + fourthPlace);
-        }
+    }
 }
