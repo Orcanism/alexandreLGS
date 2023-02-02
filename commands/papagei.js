@@ -13,7 +13,12 @@ module.exports = {
     ],
 
     async run(client, msg, args, author) {
-        msg.channel.send(args._hoistedOptions[0].value);
+        let messageToSend = '';
+        let messageToSendList = args._hoistedOptions[0].value.split('|');
+        for (let i = 0; i < messageToSendList.length; i++) {
+            messageToSend += messageToSendList[i] + '\n';   
+        }
+        msg.channel.send(messageToSend);
         msg.reply({content: 'Voilà pour toi !', ephemeral: true});
     }
 }
