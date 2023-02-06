@@ -85,7 +85,7 @@ client.on('ready', async () => {
 client.on('guildMemberAdd', member => {
 	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "firstJoinDate": formatDate(new Date())};
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "lastMessage": "yousk2", "sameMessageCount": 0, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 	}
@@ -141,13 +141,28 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async msg => {
     if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
+	// Anti spam
+	if (msg.content === memberStats[msg.author.id].lastMessage) {
+		memberStats[msg.author.id].sameMessageCount += 1;
+	}
+	if (memberStats[msg.author.id].sameMessageCount > 2) {
+		oldRoleRemover(msg.member);
+		memberStats[msg.author.id].sameMessageCount = 0;
+	}
+	memberStats[msg.author.id].lastMessage = msg.content
+
 	// Compteur de messages envoyés sur le serveur
 	let numberToAdd = 1
 	if (msg.content.match(/\n/gm)) {
 		numberToAdd += msg.content.match(/\n/gm).length
 	}
 	memberStats[msg.author.id].messageCount += numberToAdd;
-	memberStats[msg.author.id].username = msg.author.username;
+	if (msg.member.nickname == null) {
+		memberStats[msg.author.id].username = msg.author.username
+	}
+	else {
+		memberStats[msg.author.id].username = msg.member.nickname;
+	}
 	let memberStatsPush = JSON.stringify(memberStats, null, 4);
 	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 })
