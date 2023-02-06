@@ -142,15 +142,16 @@ client.on('messageCreate', async msg => {
     if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
 	// Anti spam
-	if (msg.content === memberStats[msg.author.id].lastMessage) {
-		memberStats[msg.author.id].sameMessageCount += 1;
+	if (msg.content != ''){
+		if (msg.content === memberStats[msg.author.id].lastMessage) {
+			memberStats[msg.author.id].sameMessageCount += 1;
+		}
+		if (memberStats[msg.author.id].sameMessageCount > 2) {
+			oldRoleRemover(msg.member);
+			memberStats[msg.author.id].sameMessageCount = 0;
+		}
+		memberStats[msg.author.id].lastMessage = msg.content
 	}
-	if (memberStats[msg.author.id].sameMessageCount > 2) {
-		oldRoleRemover(msg.member);
-		memberStats[msg.author.id].sameMessageCount = 0;
-	}
-	memberStats[msg.author.id].lastMessage = msg.content
-
 	// Compteur de messages envoyés sur le serveur
 	let numberToAdd = 1
 	if (msg.content.match(/\n/gm)) {
