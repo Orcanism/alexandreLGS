@@ -150,16 +150,17 @@ client.on('messageCreate', async msg => {
 			oldRoleRemover(msg.member);
 			memberStats[msg.author.id].sameMessageCount = 0;
 		}
-		memberStats[msg.author.id].lastMessage = msg.content
+		memberStats[msg.author.id].lastMessage = msg.content;
+		memberStats[msg.author.id].sameMessageCount = 0;
 	}
 	// Compteur de messages envoyés sur le serveur
 	let numberToAdd = 1
 	if (msg.content.match(/\n/gm)) {
-		numberToAdd += msg.content.match(/\n/gm).length
+		numberToAdd += msg.content.match(/\n/gm).length;
 	}
 	memberStats[msg.author.id].messageCount += numberToAdd;
 	if (msg.member.nickname == null) {
-		memberStats[msg.author.id].username = msg.author.username
+		memberStats[msg.author.id].username = msg.author.username;
 	}
 	else {
 		memberStats[msg.author.id].username = msg.member.nickname;
