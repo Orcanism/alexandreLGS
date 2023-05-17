@@ -9,6 +9,6 @@ module.exports = {
     description: 'Permet de tester les fonctions experimentales du bot',
 
     async run(client, msg, args, author) {
-        // CODE HERE
+        //  CODE HERE
     }
 }
