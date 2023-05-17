@@ -1,13 +1,15 @@
 const Discord = require('discord.js');
 const https = require('https');
 const jsdom = require('jsdom');
+const private = require('../private.json')
 
 module.exports = {
     name: 'meteo',
     description: 'Envoie la météo de Skopje (la capitale de la macédoine)',
 
     async run(client, msg, args, author) {
-        let link = {host: 'weather.com', path: '/fr-FR/temps/aujour/l/13d451840dce871fb7bd25fac368ff94bd3b30b8a2c74fe3285ec75851f54ddc'};
+        let linkPath = '/data/2.5/weather?lat=42&lon=21.43&units=metric&lang=fr&appid=' + private.apiKeyOpenWeather;
+        let link = {host: 'api.openweathermap.org', path: linkPath};
         https.get(link, res => {
             let html = '';
             res.on('data', chunk => {
@@ -17,9 +19,10 @@ module.exports = {
                 if (res.statusCode === 200) {
                     let htmlDOM = new jsdom.JSDOM(html);
                     let document = htmlDOM.window.document;
-                    let temp = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[0].textContent;
-                    let sky = document.getElementsByClassName("CurrentConditions--primary--2DOqs")[0].childNodes[1].textContent.toLowerCase();
-                    msg.reply(`À Skopje il fait **${temp}** avec un ciel **${sky}**`);
+                    let info = JSON.parse(document.children[0].textContent);
+                    let temp = Math.round(info.main.temp);
+                    let sky = Math.round(info.clouds.all);
+                    msg.reply(`À Skopje il fait **${temp}°** avec une couverture nuageuse de **${sky}%**`);
                 }
                 else if (res.statusCode !== 200) {
                     msg.reply({content: `L\'erreur ${res.statusCode} est survenue. Veuillez réessayer`, ephemeral : true});
