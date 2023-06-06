@@ -59,7 +59,7 @@ client.on('ready', async () => {
 		for (let i = 0; i < Object.keys(memberStats).length; i++) {
 			let arrayKey = Object.keys(memberStats)[i];
 			if (memberStats[arrayKey].hasOwnProperty('birthday')) {
-				if (memberStats[arrayKey].birthday.slice(0,-5) == formatDate(new Date()).slice(0,-5)) {
+				if (memberStats[arrayKey].birthday.slice(0,-5) == formatDate(new Date()).slice(0,-5) && memberStats[arrayKey].isInGuild) {
 					let age = formatDate(new Date()).slice(-4) - memberStats[arrayKey].birthday.slice(-4);
 					hasBirthday.push(`${memberStats[arrayKey].username} (${age} ans)`);
 				}
