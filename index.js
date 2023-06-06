@@ -5,6 +5,7 @@ const slashCommandHandler = require('./handlers/slashCommandsHanlder');
 const fs = require('fs');
 const cron = require('cron');
 
+const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
 
@@ -83,12 +84,22 @@ client.on('ready', async () => {
 
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
 client.on('guildMemberAdd', member => {
-	// Envoi un message en mp au nouveau membre
 	if (!memberStats.hasOwnProperty(member.id)) {
 		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "lastMessage": "yousk2", "sameMessageCount": 0, "firstJoinDate": formatDate(new Date())};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 	}
+	else {
+		memberStats[member.id].isInGuild = true;
+		let memberStatsPush = JSON.stringify(memberStats, null, 4);
+		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+	}
+});
+
+client.on('guildMemberRemove', member => {
+	memberStats[member.id].isInGuild = false;
+	let memberStatsPush = JSON.stringify(memberStats, null, 4);
+	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 });
 
 client.on('interactionCreate', async interaction => {
