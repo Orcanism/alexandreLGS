@@ -58,6 +58,9 @@ module.exports = {
                                 let htmlDOM = new jsdom.JSDOM(html);
                                 let document = htmlDOM.window.document;
                                 matchList = JSON.parse(document.children[0].textContent);
+                                if (args._hoistedOptions[1].value > matchList.length) {
+                                    msg.reply({content: `Le match numéro ${args._hoistedOptions[1].value} n'est pas dans la liste. Veuillez choisir un nomre inférieur à ${matchList.length + 1}`, ephemeral : true})
+                                }
 
                                 let matchV5LinkTwoPath = `/lol/match/v5/matches/${matchList[args._hoistedOptions[1].value - 1]}?api_key=${private.apiKeyRiot}`;
                                 let matchV5LinkTwo = {host: 'europe.api.riotgames.com', path: matchV5LinkTwoPath};
