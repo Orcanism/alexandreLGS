@@ -32,8 +32,8 @@ module.exports = {
         let statsName = [];
         let note = {};
         let dataCleaned = {};
-        let memberIGN = args._hoistedOptions[0].value;
-        let summonerV4LinkPath = `/lol/summoner/v4/summoners/by-name/${memberIGN.replace(' ', '%20')}?api_key=${private.apiKeyRiot}`;
+        let memberIGN = encodeURI(args._hoistedOptions[0].value);
+        let summonerV4LinkPath = `/lol/summoner/v4/summoners/by-name/${memberIGN}?api_key=${private.apiKeyRiot}`;
         let summonerV4Link = {host: 'euw1.api.riotgames.com', path: summonerV4LinkPath};
         https.get(summonerV4Link, res => {
             let html = '';
@@ -84,12 +84,10 @@ module.exports = {
                                                     "damageDealtToObjectives": data[i].damageDealtToObjectives,
                                                     "damageDealtToTurrets": data[i].damageDealtToTurrets,
                                                     "damageSelfMitigated": data[i].damageSelfMitigated,
-                                                    "deaths": data[i].deaths,
                                                     "detectorWardsPlaced": data[i].detectorWardsPlaced,
                                                     "dragonKills": data[i].dragonKills,
                                                     "goldEarned": data[i].goldEarned,
                                                     "goldSpent": data[i].goldSpent,
-                                                    "individualPosition": data[i].individualPosition,
                                                     "inhibitorKills": data[i].inhibitorKills,
                                                     "inhibitorTakedowns": data[i].inhibitorTakedowns,
                                                     "kills": data[i].kills,
@@ -111,12 +109,13 @@ module.exports = {
                                                     "trueDamageDealtToChampions": data[i].trueDamageDealtToChampions,
                                                     "turretKills": data[i].turretKills,
                                                     "turretTakedowns": data[i].turretTakedowns,
-                                                    "turretsLost": data[i].turretsLost,
                                                     "visionScore": data[i].visionScore,
                                                     "wardsKilled": data[i].wardsKilled,
                                                     "wardsPlaced": data[i].wardsPlaced,
+                                                    "deaths": data[i].deaths,
                                                     "farm": data[i].neutralMinionsKilled + data[i].totalMinionsKilled,
-                                                    "win": data[i].win
+                                                    "win": data[i].win,
+                                                    "individualPosition": data[i].individualPosition
                                                 }
                                             }
                                             for (let i = 0; i < Object.keys(dataCleaned).length; i++) {
@@ -124,9 +123,10 @@ module.exports = {
                                                 note[Object.keys(dataCleaned)[i]] = 0;
                                                 leaderboardArray.push(dataCleaned[arrayKey]);
                                             }
-                                            for (let i = 0; i < Object.keys(leaderboardArray[0]).length - 2; i++) {
+                                            for (let i = 0; i < Object.keys(leaderboardArray[0]).length - 4; i++) {
                                                 statsName.push(Object.keys(leaderboardArray[0])[i]);
                                             }
+                                            //Normal rank
                                             for (let i = 1; i < statsName.length; i++) {
                                                 leaderboardArray = leaderboardArray.sort((a, b) => {
                                                     if (b[Object.keys(leaderboardArray[0])[i]] > a[Object.keys(leaderboardArray[0])[i]]) {
@@ -138,7 +138,7 @@ module.exports = {
                                                 }
                                             }
 
-                                            //Rank farm
+                                            //Invert rank
                                             leaderboardArray = leaderboardArray.sort((a, b) => {
                                                 if (b[Object.keys(leaderboardArray[0]).farm] > a[Object.keys(leaderboardArray[0]).farm]) {
                                                     return -1;
@@ -151,7 +151,19 @@ module.exports = {
                                                 else {
                                                     note[leaderboardArray[i].player] += i + 1;
                                                 }
-                                                
+                                            }
+                                            leaderboardArray = leaderboardArray.sort((a, b) => {
+                                                if (b[Object.keys(leaderboardArray[0]).deaths] > a[Object.keys(leaderboardArray[0]).deaths]) {
+                                                    return -1;
+                                                }
+                                            })
+                                            for (let i = 0; i < leaderboardArray.length; i++) {
+                                                if (leaderboardArray[i].individualPosition == 'UTILITY') {
+                                                    note[leaderboardArray[i].player] += 4;
+                                                }
+                                                else {
+                                                    note[leaderboardArray[i].player] += i + 1;
+                                                }
                                             }
 
                                             // Check who won

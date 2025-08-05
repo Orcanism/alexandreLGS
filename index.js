@@ -5,7 +5,6 @@ const slashCommandHandler = require('./handlers/slashCommandsHanlder');
 const fs = require('fs');
 const cron = require('cron');
 
-const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
 
@@ -85,7 +84,7 @@ client.on('ready', async () => {
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
 client.on('guildMemberAdd', member => {
 	if (!memberStats.hasOwnProperty(member.id)) {
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "lastMessage": "yousk2", "sameMessageCount": 0, "firstJoinDate": formatDate(new Date())};
+		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "lastMessage": "yousk2", "sameMessageCount": 0, "firstJoinDate": formatDate(new Date()), "isInGuild": true};
 		let memberStatsPush = JSON.stringify(memberStats, null, 4);
 		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
 	}
