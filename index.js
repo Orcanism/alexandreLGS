@@ -5,6 +5,7 @@ const slashCommandHandler = require('./handlers/slashCommandsHanlder');
 const fs = require('fs');
 const cron = require('cron');
 
+const config = require('./config.json');
 const private = require('./private.json');
 const memberStats = require('./memberStats.json');
 
@@ -39,6 +40,10 @@ function oldRoleRemover(member) {
 	if(member.roles.cache.has('1058383818823843870')){
 		member.roles.remove('1058383818823843870');
 	}
+	// Enleve la sauce riche
+	if(member.roles.cache.has('1452305712981082204')){
+		member.roles.remove('1452305712981082204');
+	}
 }
 
 // Fonction formatDate, renvoie la date du jour au format dd/mm/yyyy
@@ -49,6 +54,33 @@ function formatDate(date) {
 	  	padTo2Digits(date.getMonth() + 1),
 	  	date.getFullYear(),
 	].join('/');
+}
+
+function ensureMemberExists(member) {
+    if (!memberStats[member.id]) {
+        memberStats[member.id] = {
+            username: member.displayName,
+            messageCount: 0,
+            lastMessage: "yousk2",
+            sameMessageCount: 0,
+            firstJoinDate: formatDate(new Date()),
+            isInGuild: true
+        };
+        return true;
+    }
+
+    memberStats[member.id].isInGuild = true;
+    return false;
+}
+
+function saveMemberStats() {
+    fs.writeFile(
+        "./memberStats.json",
+        JSON.stringify(memberStats, null, 4),
+        err => {
+            if (err) console.error("Error saving memberStats:", err);
+        }
+    );
 }
 
 client.on('ready', async () => {
@@ -83,22 +115,14 @@ client.on('ready', async () => {
 
 // Actions s'éxécutant lorsqu'un membre rejoint le serveur
 client.on('guildMemberAdd', member => {
-	if (!memberStats.hasOwnProperty(member.id)) {
-		memberStats[member.id] = {"username": member.displayName, "messageCount": 0, "lastMessage": "yousk2", "sameMessageCount": 0, "firstJoinDate": formatDate(new Date()), "isInGuild": true};
-		let memberStatsPush = JSON.stringify(memberStats, null, 4);
-		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
-	}
-	else {
-		memberStats[member.id].isInGuild = true;
-		let memberStatsPush = JSON.stringify(memberStats, null, 4);
-		fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
-	}
+	ensureMemberExists(member);
+    saveMemberStats();
 });
 
 client.on('guildMemberRemove', member => {
+	if (!memberStats[member.id]) return;
 	memberStats[member.id].isInGuild = false;
-	let memberStatsPush = JSON.stringify(memberStats, null, 4);
-	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+    saveMemberStats();
 });
 
 client.on('interactionCreate', async interaction => {
@@ -151,18 +175,36 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async msg => {
     if (msg.author.bot) return; // Ne prends pas en compte les messages venant de bot
 
+	if (!memberStats[msg.author.id]) {
+		console.warn(`Missing statistics for ${msg.author.tag}, creating entry.`);	
+		ensureMemberExists(msg.member);
+		saveMemberStats();
+	}
+
 	// Anti spam
 	if (msg.content != ''){
 		if (msg.content === memberStats[msg.author.id].lastMessage) {
 			memberStats[msg.author.id].sameMessageCount += 1;
 		}
-		if (memberStats[msg.author.id].sameMessageCount > 2) {
+		else {
+			memberStats[msg.author.id].sameMessageCount = 0;
+		}
+		if (memberStats[msg.author.id].sameMessageCount >= 2) {
 			oldRoleRemover(msg.member);
 			memberStats[msg.author.id].sameMessageCount = 0;
 		}
+
 		memberStats[msg.author.id].lastMessage = msg.content;
-		memberStats[msg.author.id].sameMessageCount = 0;
+		saveMemberStats();
 	}
+
+	// Anti Hacked Accounts
+	if (msg.channel.id == '1572973225845989486') {
+		msg.member.roles.set(['1363604129787678972']);
+		msg.reply({content: 'Vous avez été softban, contactez une Knack ancestrale pour récupérer vos roles !', ephemeral: true});
+		return;
+	}
+
 	// Compteur de messages envoyés sur le serveur
 	let numberToAdd = 1
 	if (msg.content.match(/\n/gm)) {
@@ -175,6 +217,5 @@ client.on('messageCreate', async msg => {
 	else {
 		memberStats[msg.author.id].username = msg.member.nickname;
 	}
-	let memberStatsPush = JSON.stringify(memberStats, null, 4);
-	fs.writeFile("./memberStats.json", memberStatsPush, () => console.error);
+	saveMemberStats();
 })
